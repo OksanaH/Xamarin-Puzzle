@@ -7,17 +7,16 @@
     android:minWidth="25px"
     android:minHeight="25px">
     <GridLayout
+        android:id="@+id/gameGridLayoutId"
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="232.5dp"
         android:layout_height="wrap_content"
-        android:id="@+id/gameGridLayoutId"
         android:layout_marginRight="366.0dp" />
     <Button
         android:id="@+id/resetButtonId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/entry"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="10dip"
         android:text="Reset"
