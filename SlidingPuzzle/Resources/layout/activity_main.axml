@@ -10,15 +10,14 @@
         android:id="@+id/gameGridLayoutId"
         android:minWidth="25px"
         android:minHeight="25px"
-        android:layout_width="232.5dp"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="366.0dp" />
+        android:layout_width="642.5dp"
+        android:layout_height="50.0dp" />
     <Button
         android:id="@+id/resetButtonId"
-        android:layout_width="wrap_content"
+        android:layout_width="374.5dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="10dip"
+        android:layout_marginTop="300dip"
         android:text="Reset"
         android:background="@android:color/holo_orange_light" />
 </RelativeLayout>
