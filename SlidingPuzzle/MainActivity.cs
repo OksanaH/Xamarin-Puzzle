@@ -5,6 +5,8 @@ using Android.Support.V7.App;
 using Android.Graphics;
 using Android.Views;
 using System.Collections;
+using System;
+
 namespace SlidingPuzzle
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
@@ -13,9 +15,12 @@ namespace SlidingPuzzle
         #region
         Button resetButton;
         GridLayout mainLayout;
+        ArrayList tilesList = new ArrayList();
+        ArrayList coordList = new ArrayList();
 
         int gameViewWidth;
         int tileWidth;
+        
         #endregion
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -31,7 +36,10 @@ namespace SlidingPuzzle
 
         private void SetGameView()
         {
-            resetButton = FindViewById<Button>(Resource.Id.resetButtonId);
+            resetButton = (Button)FindViewById<Button>(Resource.Id.resetButtonId);
+            resetButton.Click += (object sender, EventArgs e) => {
+                Reset(sender, e);
+            };
             mainLayout = FindViewById<GridLayout>(Resource.Id.gameGridLayoutId);
 
             gameViewWidth = Resources.DisplayMetrics.WidthPixels;
@@ -44,6 +52,7 @@ namespace SlidingPuzzle
 
         private void MakeTiles()
         {
+            
             tileWidth = gameViewWidth / 4;
             int tileCount = 1;
             for (int row=0; row<4; row++)
@@ -68,11 +77,47 @@ namespace SlidingPuzzle
 
                     tileText.LayoutParameters = tileLayoutParams;
                     tileText.SetBackgroundColor(Color.Green);
+
+                    //save coordinates of tile
+                    Point tileLocation =new Point(col, row);
+                    coordList.Add(tileLocation);
+                    tilesList.Add(tileText);
+
                     mainLayout.AddView(tileText);
 
                     tileCount = tileCount+1;
                 }
-            }  
+            }
+            mainLayout.RemoveView((TextView)tilesList[15]);
+            tilesList.RemoveAt(15);
+        }
+
+        private void RandomiseTiles()
+        {
+            Random randomiser = new Random();
+            ArrayList copyCoordList = new ArrayList(coordList);
+
+            foreach (TextView tile in tilesList)
+            {
+                int randIndex = randomiser.Next(0, copyCoordList.Count);
+                Point randomisedLocation = (Point)copyCoordList[randIndex];
+
+                GridLayout.Spec rowSpec = GridLayout.InvokeSpec(randomisedLocation.X);
+                GridLayout.Spec colSpec = GridLayout.InvokeSpec(randomisedLocation.Y);
+                GridLayout.LayoutParams randTileParams = new GridLayout.LayoutParams(rowSpec, colSpec);
+
+                randTileParams.Width = tileWidth - 10;
+                randTileParams.Height = tileWidth - 10;
+                randTileParams.SetMargins(5, 5, 5, 5);
+
+                tile.LayoutParameters = randTileParams;
+                copyCoordList.RemoveAt(randIndex);
+            }
+        }
+
+        void Reset(object sender, EventArgs e)
+        {
+            RandomiseTiles();
         }
     }
 }
